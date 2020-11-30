@@ -1,7 +1,7 @@
 # EEET2610_Design_3
 
 ## Instalation
-Here are the list package in the environment:
+Here are the list of packages in the environment:
 ```
 cycler==0.10.0
 kiwisolver==1.3.1
