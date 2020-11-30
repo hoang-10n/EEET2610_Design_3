@@ -11,7 +11,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtTest
 from PyQt5.QtWidgets import (QApplication, QWidget)
 from PyQt5.Qt import Qt
-import file_rccc
+import file_rc
+import paho.mqtt.publish as publish
+
+broker_location = "192.168.4.1"
 
 
 class Ui_MainWindow(object):
@@ -244,22 +247,26 @@ class Ui_MainWindow(object):
         if self.pushButton.isChecked():
             if self.pushButton_5.isChecked():
                 self.label.setText("Status: Up")
-                self.y -= 20
+                publish.single("FirstTry/Test", "Up", hostname = broker_location)
+                self.y -= 10
             self.pushButton.toggle()
         elif self.pushButton_2.isChecked():
             if self.pushButton_5.isChecked():
-                self.y += 20
+                self.y += 10
                 self.label.setText("Status: Down")
+                publish.single("FirstTry/Test", "Down", hostname = broker_location)
             self.pushButton_2.toggle()
         elif self.pushButton_3.isChecked():
             if self.pushButton_5.isChecked():
-                self.x += 26
+                self.x += 10
                 self.label.setText("Status: Right")
+                publish.single("FirstTry/Test", "Right", hostname = broker_location)
             self.pushButton_3.toggle()
         elif self.pushButton_4.isChecked():
             if self.pushButton_5.isChecked():
-                self.x -= 26
+                self.x -= 10
                 self.label.setText("Status: Left")
+                publish.single("FirstTry/Test", "Left", hostname = broker_location)
             self.pushButton_4.toggle()
         elif self.pushButton_5.isChecked():
             self.pushButton_5.setText("Automatic Control")
