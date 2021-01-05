@@ -16,7 +16,7 @@ while True:
     rows = gray.shape[0]
     circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, 1, rows / 8,
                               param1=150, param2=30,
-                              minRadius=1, maxRadius=40)
+                              minRadius=1, maxRadius=100)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
