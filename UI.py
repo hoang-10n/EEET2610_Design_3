@@ -10,12 +10,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtTest
 from PyQt5.QtWidgets import (QApplication, QWidget)
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.Qt import Qt
 import file_rc
 import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
+import base64
+import cv2
+import numpy as np
 
 broker_location = "192.168.4.1"
 
+global pixmap
+pixmap = None
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -235,6 +242,10 @@ class Ui_MainWindow(object):
         self.timer.timeout.connect(self.carMove)
         self.timer.start(100)
 
+        self.timer2 = QtCore.QTimer()
+        self.timer2.timeout.connect(self.changeImage)
+        self.timer2.start(60)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -323,9 +334,37 @@ class Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "0"))
         self.label_11.setText(_translate("MainWindow", "0"))
 
+    def changeImage(self):
+        global pixmap
+        if (pixmap is not None):
+            img = base64.b64decode(pixmap)
+            npimg = np.frombuffer(img, dtype=np.uint8)
+            source = cv2.imdecode(npimg, 1)
+            image = QImage(source.data, source.shape[1], source.shape[0], source.shape[1]*3, QImage.Format_BGR888)
+            self.label_6.setPixmap(QPixmap.fromImage(image))
+
+
+class Viewer:
+    def on_message(self, client, userdata, message):
+        global pixmap
+        pixmap = message.payload
+        # self.stream(message.payload)
+
+    def on_connect(self, client, userdata, flags, rc):
+        print("Connected")
+        self.client.subscribe("Design3/Camera")
+    
+    def __init__(self):
+        self.client = mqtt.Client()
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+        self.client.connect(broker_location)
+        self.client.loop_start()
+
 
 if __name__ == "__main__":
     import sys
+    viewer = Viewer()
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
