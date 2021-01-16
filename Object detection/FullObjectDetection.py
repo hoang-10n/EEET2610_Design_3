@@ -10,8 +10,20 @@ DELAY = 5
 sudo apt-get install python-opencv
 sudo apt-get install python-matplotlib
 """
+img = cv2.imread("C:\\Users\\Admin\\Desktop\\new\\qwe.jpg", 1)
+# red color boundaries [B, G, R]
 
-rgb = cv2.imread("C:\\Users\\Admin\\Desktop\\new\\hat.jpg", 1)
+## convert to hsv
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+## mask of green (36,25,25) ~ (86, 255,255)
+# mask = cv2.inRange(hsv, (36, 25, 25), (86, 255,255))
+mask = cv2.inRange(hsv, (70,0,0), (125,255,255))
+
+## slice the green
+imask = mask>0
+rgb = np.zeros_like(img, np.uint8)
+rgb[imask] = img[imask]
 
 
 def findCube():
