@@ -13,8 +13,8 @@ from PyQt5.QtWidgets import (QApplication, QWidget)
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.Qt import Qt
 import file_rccccc
-import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 import base64
 import cv2
 import numpy as np
@@ -375,7 +375,7 @@ class Viewer:
 
 if __name__ == "__main__":
     import sys
-    viewer = Viewer()
+    # viewer = Viewer()
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

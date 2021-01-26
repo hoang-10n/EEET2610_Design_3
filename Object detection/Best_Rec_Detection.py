@@ -41,7 +41,7 @@ while True :
 	# 	ret, rgb = video_capture.read()
 	# else :
 	ret = 1
-	rgb = cv2.imread( "Untitled.jpg", 1 )
+	rgb = cv2.imread( "Cube.jpg", 1 )
 
 	if ( ret ):
 
@@ -92,7 +92,7 @@ while True :
 
 		closed = cv2.morphologyEx( edges, cv2.MORPH_CLOSE, kernel )
 
-		contours, hieriarchy = cv2.findContours( closed, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE )
+		contours, hieriarchy = cv2.findContours( closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE )
 
 		for cont in contours:
 			bbox = cv2.boundingRect(cont)
@@ -130,7 +130,7 @@ while True :
 						i = i + 1
 						# cv2.putText(rgb, "Rectangle", ((int)(cx) - 20, (int)(cy) - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
-				if (len ( approx ) == 6):
+				if (len ( approx ) in range(5,8)):
 					cv2.drawContours( rgb, [approx], -1, ( 255, 0, 0 ), -1 )
 					cv2.putText(rgb, "Cube", ((int)(cx) - 20, (int)(cy) - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 			# lines = cv2.HoughLinesP(edges, 1, np.pi/180, 1, minLineLength=50, maxLineGap=200)
@@ -150,11 +150,11 @@ while True :
 
 			# else : pass
 
-		corners = cv2.goodFeaturesToTrack(gray, 50, 0.01, 50)
+		# corners = cv2.goodFeaturesToTrack(gray, 50, 0.01, 50)
 
-		for corner in corners:
-			x, y = corner.ravel()
-			cv2.circle(rgb, (x, y), 3, (0,0,255), -1)
+		# for corner in corners:
+		# 	x, y = corner.ravel()
+		# 	cv2.circle(rgb, (x, y), 3, (0,0,255), -1)
 
 		#cv2.imshow( 'closed', closed )
 		#cv2.imshow( 'gray', gray )

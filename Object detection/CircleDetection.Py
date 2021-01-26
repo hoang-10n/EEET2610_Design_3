@@ -5,7 +5,8 @@ import numpy as np
 
 cap = cv.VideoCapture(0)
 while True:
-    _,src = cap.read()
+    # _,src = cap.read()
+    src = cv.imread( "Sphere.jpg", 1 )
     # Loads an image
     # Check if image is loaded fine
 
@@ -16,7 +17,7 @@ while True:
     rows = gray.shape[0]
     circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, 1, rows / 8,
                               param1=150, param2=30,
-                              minRadius=1, maxRadius=100)
+                              minRadius=1, maxRadius=300)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
